@@ -82,62 +82,12 @@
       .header-divider, .header-label { display: none; }
     }
 
-    /* ── HERO ────────────────────────────────────────── */
-    .hero {
-      background: var(--navy);
-      padding: 3rem 2.5rem 0;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      right: -60px; top: -60px;
-      width: 320px; height: 320px;
-      background: var(--teal);
-      opacity: 0.08;
-      border-radius: 50%;
-    }
-
-    .hero::after {
-      content: '';
-      position: absolute;
-      right: 80px; bottom: -40px;
-      width: 180px; height: 180px;
-      background: var(--red);
-      opacity: 0.1;
-      border-radius: 50%;
-    }
-
-    .hero-content { position: relative; z-index: 1; }
-
-    .hero h1 {
-      font-family: 'Fugaz One', display;
-      font-size: clamp(2.2rem, 5vw, 3.6rem);
-      color: white;
-      letter-spacing: 0.01em;
-      line-height: 1.05;
-    }
-
-    .hero h1 .accent  { color: var(--red);  }
-    .hero h1 .accent2 { color: var(--teal); }
-
-    .hero-lead {
-      margin-top: 0.6rem;
-      color: rgba(255,255,255,0.5);
-      font-size: 0.9rem;
-      font-weight: 300;
-      max-width: 500px;
-    }
-
     /* ── TABS ────────────────────────────────────────── */
     .tabs-wrapper {
       background: var(--navy);
       border-bottom: 2px solid rgba(255,255,255,0.07);
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
-      margin-top: 2rem;
     }
 
     .tabs-wrapper::-webkit-scrollbar { height: 2px; }
@@ -478,6 +428,7 @@
     .tc-evaluation  { --tc: var(--type-eval);    }
     .tc-valuation   { --tc: var(--type-eval);    }
     .tc-stage       { --tc: var(--type-stage);   }
+    .tc-admin       { --tc: #9ca3af;             }
 
     /* ── LOADING ─────────────────────────────────────── */
     .empty {
@@ -539,13 +490,6 @@
   <span class="header-label">Programmes de <strong>formation</strong></span>
 </header>
 
-<div class="hero">
-  <div class="hero-content">
-    <h1>PROGRAMMES<br/>DE <span class="accent">FORMATION</span></h1>
-    <p class="hero-lead">Syllabus détaillé de chaque cursus — modules, projets et évaluations.</p>
-  </div>
-</div>
-
 <div class="tabs-wrapper">
   <div class="tabs" id="tabs-nav"></div>
 </div>
@@ -566,69 +510,23 @@
 // Format colonnes attendu : Intitulé | Date début | Date fin | Type | Descriptif
 // ─────────────────────────────────────────────────────────────
 
+const BASE = 'https://docs.google.com/spreadsheets/d/1SMWsb0or1m-Jza0N2TuUZ4HkQdFDuoMvF-RvbBpaxpU/gviz/tq?tqx=out:csv&sheet=';
+
 const SHEETS_CONFIG = [
-  { id: 'bac3-dev',       label: 'BAC+3 — Développement Web',      niveau: 'BAC+3', csvUrl: null },
-  { id: 'bac3-marketing', label: 'BAC+3 — Marketing Digital',       niveau: 'BAC+3', csvUrl: null },
-  { id: 'bac3-graphisme', label: 'BAC+3 — Communication Graphique', niveau: 'BAC+3', csvUrl: null },
-  { id: 'bac5-ing',       label: 'BAC+5 — Ingénierie Numérique',    niveau: 'BAC+5', csvUrl: null },
-  { id: 'bac5-ux',        label: 'BAC+5 — Expert UX/UI',            niveau: 'BAC+5', csvUrl: null },
+  { id: 'a1',      label: 'Année 1',          niveau: 'Tronc commun', csvUrl: BASE + 'A1'       },
+  { id: 'a2-dw',   label: 'A2 — Dev Web',     niveau: 'BAC+2',        csvUrl: BASE + 'A2%20DW'  },
+  { id: 'a2-cg',   label: 'A2 — Comm. Graph', niveau: 'BAC+2',        csvUrl: BASE + 'A2%20CG'  },
+  { id: 'a2-cmd',  label: 'A2 — C&MD',        niveau: 'BAC+2',        csvUrl: BASE + 'A2%20C%26MD' },
+  { id: 'a3-dw',   label: 'A3 — Dev Web',     niveau: 'BAC+3',        csvUrl: BASE + 'A3%20DW'  },
+  { id: 'a3-cg',   label: 'A3 — Comm. Graph', niveau: 'BAC+3',        csvUrl: BASE + 'A3%20CG'  },
+  { id: 'a3-cmd',  label: 'A3 — C&MD',        niveau: 'BAC+3',        csvUrl: BASE + 'A3%20C%26MD' },
+  { id: 'a4-dw',   label: 'A4 — Dev Web',     niveau: 'BAC+4',        csvUrl: BASE + 'A4%20DW'  },
+  { id: 'a4-cg',   label: 'A4 — Comm. Graph', niveau: 'BAC+4',        csvUrl: BASE + 'A4%20CG'  },
+  { id: 'a4-cmd',  label: 'A4 — C&MD',        niveau: 'BAC+4',        csvUrl: BASE + 'A4%20C%26MD' },
+  { id: 'a5-dw',   label: 'A5 — Dev Web',     niveau: 'BAC+5',        csvUrl: BASE + 'A5%20DW'  },
+  { id: 'a5-cg',   label: 'A5 — Comm. Graph', niveau: 'BAC+5',        csvUrl: BASE + 'A5%20CG'  },
+  { id: 'a5-cmd',  label: 'A5 — C&MD',        niveau: 'BAC+5',        csvUrl: BASE + 'A5%20C%26MD' },
 ];
-
-// ─────────────────────────────────────────────────────────────
-// DONNÉES DEMO
-// ─────────────────────────────────────────────────────────────
-
-const MOCK = {
-  'bac3-dev': [
-    { title:'Fondamentaux du web',       start:'02/09/2024', end:'20/09/2024', type:'cours',   desc:'HTML, CSS, Git, VS Code et bases du développement front-end.' },
-    { title:'JavaScript',                start:'23/09/2024', end:'18/10/2024', type:'cours',   desc:'Variables, fonctions, DOM, événements et interactions dynamiques.' },
-    { title:'Projet vitrine WordPress',  start:'21/10/2024', end:'08/11/2024', type:'projet',  desc:'Site vitrine pour un client fictif avec WordPress et ACF.' },
-    { title:'UX & Wireframing',          start:'12/11/2024', end:'22/11/2024', type:'atelier', desc:'Personas, arborescences et maquettage sur Figma.' },
-    { title:'Évaluation S1',             start:'25/11/2024', end:'29/11/2024', type:'eval',    desc:'Grand cas pratique couvrant les modules du semestre 1.' },
-    { title:'React — Introduction',      start:'06/01/2025', end:'31/01/2025', type:'cours',   desc:'Composants, props, state, hooks (useState, useEffect).' },
-    { title:'Node.js & API REST',        start:'03/02/2025', end:'28/02/2025', type:'cours',   desc:'API avec Express, routes, middlewares et base SQL.' },
-    { title:'Projet fil rouge',          start:'03/03/2025', end:'11/04/2025', type:'projet',  desc:'Application full-stack en équipe de 3, méthodo agile.' },
-    { title:'Stage en entreprise',       start:'14/04/2025', end:'27/06/2025', type:'stage',   desc:'Stage 11 semaines. Rapport et soutenance orale.' },
-  ],
-  'bac3-marketing': [
-    { title:'Stratégie digitale',        start:'02/09/2024', end:'20/09/2024', type:'cours',   desc:'Marché, positionnement, cibles et parcours client digital.' },
-    { title:'SEO & Référencement',       start:'23/09/2024', end:'11/10/2024', type:'cours',   desc:'On-page, off-page, Search Console, audit technique.' },
-    { title:'Google Ads & SEA',          start:'14/10/2024', end:'01/11/2024', type:'cours',   desc:'Campagnes Search, Display, YouTube. Enchères et reporting.' },
-    { title:'Atelier réseaux sociaux',   start:'04/11/2024', end:'22/11/2024', type:'atelier', desc:'Calendrier éditorial et analyse des performances.' },
-    { title:'Évaluation S1 — Audit',     start:'25/11/2024', end:'29/11/2024', type:'eval',    desc:'Audit complet d\'une marque avec recommandations stratégiques.' },
-    { title:'Email marketing & CRM',     start:'06/01/2025', end:'24/01/2025', type:'cours',   desc:'Segmentation, automation, A/B testing (MailChimp, HubSpot).' },
-    { title:'Projet campagne 360°',      start:'27/01/2025', end:'14/03/2025', type:'projet',  desc:'Campagne multicanale pour un client réel ou fictif.' },
-    { title:'Stage en entreprise',       start:'14/04/2025', end:'27/06/2025', type:'stage',   desc:'Stage 11 semaines. Mission agence ou annonceur.' },
-  ],
-  'bac3-graphisme': [
-    { title:'Culture visuelle & typo',   start:'02/09/2024', end:'20/09/2024', type:'cours',   desc:'Histoire du graphisme, typographie, grilles et hiérarchie visuelle.' },
-    { title:'Suite Adobe',               start:'23/09/2024', end:'18/10/2024', type:'cours',   desc:'Illustrator, Photoshop et InDesign : outils et flux de production.' },
-    { title:'Identité de marque',        start:'21/10/2024', end:'15/11/2024', type:'projet',  desc:'Charte graphique complète (logo, couleurs, typos, déclinaisons).' },
-    { title:'Motion Design — AE',        start:'18/11/2024', end:'06/12/2024', type:'atelier', desc:'Animation de logos, infographies et formats réseaux animés.' },
-    { title:'Évaluation S1',             start:'09/12/2024', end:'13/12/2024', type:'eval',    desc:'Présentation du portfolio du semestre devant jury.' },
-    { title:'UI Design & Figma',         start:'06/01/2025', end:'07/02/2025', type:'cours',   desc:'Composants, auto-layout, design system et specs devs.' },
-    { title:'Projet éditorial',          start:'10/02/2025', end:'14/03/2025', type:'projet',  desc:'Magazine print et déclinaison numérique.' },
-    { title:'Stage en entreprise',       start:'14/04/2025', end:'27/06/2025', type:'stage',   desc:'Stage 11 semaines en studio ou agence.' },
-  ],
-  'bac5-ing': [
-    { title:'Architecture logicielle',   start:'02/09/2024', end:'27/09/2024', type:'cours',   desc:'Design patterns, microservices, API Gateway, principes SOLID.' },
-    { title:'DevOps & CI/CD',            start:'30/09/2024', end:'25/10/2024', type:'cours',   desc:'Docker, Kubernetes, GitHub Actions, pipelines de déploiement.' },
-    { title:'Cybersécurité appliquée',   start:'28/10/2024', end:'15/11/2024', type:'atelier', desc:'OWASP Top 10, tests d\'intrusion basiques, OAuth2.' },
-    { title:'Projet R&D — Innovation',   start:'18/11/2024', end:'31/01/2025', type:'projet',  desc:'MVP full-stack en équipe, IA et architecture cloud scalable.' },
-    { title:'Évaluation technique',      start:'03/02/2025', end:'07/02/2025', type:'eval',    desc:'Revue de code et soutenance devant jury professionnel.' },
-    { title:'Mission en entreprise',     start:'10/02/2025', end:'27/06/2025', type:'stage',   desc:'Alternance longue durée. Mémoire de fin d\'études.' },
-  ],
-  'bac5-ux': [
-    { title:'Research & Discovery',      start:'02/09/2024', end:'20/09/2024', type:'cours',   desc:'Entretiens, enquêtes, analyse heuristique et tests utilisateurs.' },
-    { title:'Prototypage avancé Figma',  start:'23/09/2024', end:'11/10/2024', type:'cours',   desc:'Variables, auto-layout, composants imbriqués, specs devs.' },
-    { title:'Design System',             start:'14/10/2024', end:'08/11/2024', type:'projet',  desc:'Design System complet, documenté, prêt pour les développeurs.' },
-    { title:'Accessibilité RGAA',        start:'12/11/2024', end:'22/11/2024', type:'atelier', desc:'Critères WCAG, outils d\'audit et intégration dans le process design.' },
-    { title:'Évaluation S1',             start:'25/11/2024', end:'29/11/2024', type:'eval',    desc:'Case study complet d\'un problème réel, présentation jury.' },
-    { title:'Strategic UX',              start:'06/01/2025', end:'31/01/2025', type:'cours',   desc:'UX metrics, ROI du design et pilotage produit.' },
-    { title:'Projet UX — client réel',   start:'03/02/2025', end:'28/03/2025', type:'projet',  desc:'Mission complète pour partenaire externe : research, design, test.' },
-    { title:'Mission en entreprise',     start:'14/04/2025', end:'27/06/2025', type:'stage',   desc:'Alternance ou stage longue durée. Mémoire et soutenance.' },
-  ],
-};
 
 // ─────────────────────────────────────────────────────────────
 // TYPES
@@ -640,7 +538,9 @@ const TYPE_DEF = {
   atelier:    { label:'Atelier',  cssClass:'tc-atelier'  },
   eval:       { label:'Éval.',    cssClass:'tc-eval'     },
   evaluation: { label:'Éval.',    cssClass:'tc-eval'     },
+  partiel:    { label:'Partiel',  cssClass:'tc-eval'     },
   stage:      { label:'Stage',    cssClass:'tc-stage'    },
+  admin:      { label:'Admin',    cssClass:'tc-admin'    },
 };
 
 function normType(t) {
@@ -694,11 +594,15 @@ function csvParse(text) {
 }
 
 async function loadSheet(sheet) {
-  if (!sheet.csvUrl) return MOCK[sheet.id] || [];
+  if (!sheet.csvUrl) return [];
   try {
     const r = await fetch(sheet.csvUrl);
+    if (!r.ok) throw new Error(r.status);
     return csvParse(await r.text());
-  } catch { return MOCK[sheet.id] || []; }
+  } catch (e) {
+    console.warn(`Erreur chargement ${sheet.id}:`, e);
+    return [];
+  }
 }
 
 // ─────────────────────────────────────────────────────────────
