@@ -113,8 +113,8 @@
     .date-dur { font-size: 0.7rem; color: var(--gray); margin-top: 0.15rem; font-weight: 300; }
 
     .timeline-view { display: none; }
-    .timeline-container { background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
-    .tl-header-row { display: grid; border-bottom: 2px solid var(--border); background: var(--light); }
+    .timeline-container { display: flex; flex-direction: column; background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .tl-header-row { display: grid; border-bottom: 2px solid var(--border); background: var(--light); flex-shrink: 0; }
     .tl-label-col { padding: 0.65rem 1rem; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--gray); border-right: 1px solid var(--border); }
     .tl-months-wrap { position: relative; overflow: hidden; }
     .tl-months { display: flex; }
