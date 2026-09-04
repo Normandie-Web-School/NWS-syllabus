@@ -178,6 +178,143 @@
       .today-chip, .header-divider, .header-label { display: none; }
       .tl-name, .tl-label-col { width: 110px !important; font-size: 0.7rem; }
     }
+
+    /* ── MISSIONS ENTREPRISE ─────────────────────────────────── */
+    .missions-section {
+      margin-top: 1.5rem;
+      background: #f0f4ff;
+      border: 1px solid #b8c6f0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .missions-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      padding: 1rem 1.25rem;
+      background: #e6ecfa;
+      border-bottom: 1px solid #b8c6f0;
+    }
+    .missions-header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .missions-icon {
+      width: 30px; height: 30px;
+      background: var(--navy);
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .missions-icon svg { display: block; }
+    .missions-header-title { font-weight: 600; font-size: 0.9rem; color: var(--navy); }
+    .missions-header-sub   { font-size: 0.74rem; color: var(--gray); margin-top: 0.1rem; }
+    .missions-generate-btn {
+      font-family: 'Fira Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: var(--navy);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 0.45rem 1rem;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      white-space: nowrap;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .missions-generate-btn:hover:not(:disabled) { background: #2d3a7a; }
+    .missions-generate-btn:active:not(:disabled) { transform: scale(0.97); }
+    .missions-generate-btn:disabled { background: var(--gray); cursor: not-allowed; opacity: 0.7; }
+
+    .missions-body { padding: 1.1rem 1.25rem; }
+
+    /* Empty */
+    .missions-empty {
+      text-align: center;
+      padding: 1.5rem 1rem;
+      color: var(--gray);
+      font-size: 0.83rem;
+      line-height: 1.6;
+    }
+    .missions-empty svg { opacity: 0.25; margin-bottom: 0.6rem; }
+
+    /* Skeleton */
+    .missions-skeleton { display: none; flex-direction: column; gap: 0.55rem; }
+    .sk-line {
+      height: 11px; border-radius: 4px;
+      background: linear-gradient(90deg, #c2cbef 25%, #e6ecfa 50%, #c2cbef 75%);
+      background-size: 200% 100%;
+      animation: sk-shimmer 1.3s infinite;
+    }
+    @keyframes sk-shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+    /* Result */
+    .missions-result { display: none; }
+    .missions-quarter { margin-bottom: 1.1rem; }
+    .missions-quarter:last-child { margin-bottom: 0; }
+    .missions-quarter-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--teal);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.55rem;
+    }
+    .missions-quarter-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #b8c6f0;
+    }
+    .mission-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.45rem;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .mission-card:last-child { margin-bottom: 0; }
+    .mission-card:hover { border-color: #b8c6f0; box-shadow: 0 2px 8px rgba(28,27,59,0.06); }
+    .mission-card-title { font-size: 0.85rem; font-weight: 600; color: var(--dark); margin-bottom: 0.25rem; }
+    .mission-card-desc  { font-size: 0.78rem; color: var(--gray); line-height: 1.5; font-weight: 300; }
+    .mission-card-skills {
+      display: flex; flex-wrap: wrap; gap: 0.3rem;
+      margin-top: 0.5rem;
+    }
+    .mission-skill {
+      font-size: 0.67rem; font-weight: 500;
+      background: rgba(0,165,165,0.1); color: var(--teal);
+      border-radius: 3px; padding: 0.1rem 0.45rem;
+    }
+    .missions-footer {
+      padding: 0.65rem 1.25rem;
+      border-top: 1px solid #b8c6f0;
+      font-size: 0.7rem;
+      color: var(--gray);
+      display: none;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .ai-pill {
+      display: inline-flex; align-items: center; gap: 0.25rem;
+      background: #e6ecfa; color: var(--navy);
+      font-size: 0.65rem; font-weight: 600;
+      border-radius: 4px; padding: 0.12rem 0.45rem;
+    }
+    @media (max-width: 640px) {
+      .missions-header { flex-direction: column; align-items: flex-start; }
+    }
   </style>
 </head>
 <body>
@@ -494,9 +631,183 @@ function renderPanel(sheet, modules, idx) {
     + '<div class="legend">' + legend + '</div>'
     + '<div id="list-' + sheet.id + '">' + renderList(modules) + '</div>'
     + '<div id="timeline-' + sheet.id + '" class="timeline-view">' + renderTimeline(modules) + '</div>'
+    + renderMissionsBlock(sheet, modules)
+    + '<script>document.getElementById("panel-' + sheet.id + '").__modules=' + JSON.stringify(modules) + ';<\/script>'
     + '</div>';
 }
 
+// ── MISSIONS ENTREPRISE ───────────────────────────────────────────────────────
+
+var missionsCache = {};
+
+function renderMissionsBlock(sheet, modules) {
+  var id = sheet.id;
+  return '<div class="missions-section" id="missions-section-' + id + '">'
+    + '<div class="missions-header">'
+    +   '<div class="missions-header-left">'
+    +     '<div class="missions-icon">'
+    +       '<svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2">'
+    +         '<path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>'
+    +       '</svg>'
+    +     '</div>'
+    +     '<div>'
+    +       '<div class="missions-header-title">Missions entreprise</div>'
+    +       '<div class="missions-header-sub">Suggérées par l\'IA · cohérentes avec le programme</div>'
+    +     '</div>'
+    +   '</div>'
+    +   '<button class="missions-generate-btn" id="missions-btn-' + id + '" onclick="generateMissions(\'' + id + '\')">'
+    +     '<svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>'
+    +     'Générer'
+    +   '</button>'
+    + '</div>'
+    + '<div class="missions-body">'
+    +   '<div class="missions-empty" id="missions-empty-' + id + '">'
+    +     '<svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">'
+    +       '<path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>'
+    +     '</svg>'
+    +     '<p>Cliquez sur <strong>Générer</strong> pour obtenir des missions entreprise cohérentes avec ce programme, par tranche de 3 mois.</p>'
+    +   '</div>'
+    +   '<div class="missions-skeleton" id="missions-skeleton-' + id + '">'
+    +     '<div class="sk-line" style="width:45%"></div>'
+    +     '<div class="sk-line" style="width:80%"></div>'
+    +     '<div class="sk-line" style="width:65%"></div>'
+    +     '<div class="sk-line" style="width:30%"></div>'
+    +     '<div class="sk-line" style="width:55%; margin-top:0.4rem"></div>'
+    +     '<div class="sk-line" style="width:88%"></div>'
+    +     '<div class="sk-line" style="width:72%"></div>'
+    +   '</div>'
+    +   '<div class="missions-result" id="missions-result-' + id + '"></div>'
+    + '</div>'
+    + '<div class="missions-footer" id="missions-footer-' + id + '">'
+    +   '<span class="ai-pill">⚡ IA</span>'
+    +   'Suggestions générées automatiquement — à adapter selon le contexte réel de l\'entreprise.'
+    + '</div>'
+    + '</div>';
+}
+
+function buildMissionsPrompt(sheet, modules) {
+  // Regroupe les modules par trimestre (3 mois) à partir des dates
+  var moduleLines = modules.map(function(m) {
+    var line = '- ' + m.title + ' [' + (m.type || 'cours') + ']';
+    if (m.start && m.end) line += ' (' + m.start + ' → ' + m.end + ')';
+    if (m.desc) line += ' : ' + m.desc;
+    return line;
+  }).join('\n');
+
+  return 'Tu es un conseiller en insertion professionnelle pour une école du numérique.\n\n'
+    + 'Formation : ' + sheet.label + ' — ' + sheet.niveau + '\n\n'
+    + 'Voici les modules du programme :\n' + moduleLines + '\n\n'
+    + 'En tenant compte de la progression pédagogique et des dates, propose des missions entreprise réalistes par tranche de 3 mois (Trimestre 1, 2, 3, 4).\n'
+    + 'Pour chaque trimestre, propose 2 missions concrètes qu\'un étudiant alternant ou stagiaire pourrait réaliser en entreprise à ce stade.\n\n'
+    + 'Réponds UNIQUEMENT en JSON valide, sans markdown, sans commentaire, avec ce format exact :\n'
+    + '[\n'
+    + '  {\n'
+    + '    "trimestre": "Trimestre 1 — Mois 1 à 3",\n'
+    + '    "missions": [\n'
+    + '      {\n'
+    + '        "titre": "Titre de la mission",\n'
+    + '        "description": "Description courte et concrète (2 phrases max) de ce que l\'étudiant fait.",\n'
+    + '        "competences": ["Compétence 1", "Compétence 2", "Compétence 3"]\n'
+    + '      }\n'
+    + '    ]\n'
+    + '  }\n'
+    + ']';
+}
+
+function showMissionsState(id, state) {
+  document.getElementById('missions-empty-' + id).style.display    = state === 'empty'    ? 'block' : 'none';
+  document.getElementById('missions-skeleton-' + id).style.display = state === 'loading'  ? 'flex'  : 'none';
+  document.getElementById('missions-result-' + id).style.display   = state === 'result'   ? 'block' : 'none';
+  document.getElementById('missions-footer-' + id).style.display   = state === 'result'   ? 'flex'  : 'none';
+}
+
+function renderMissionsResult(id, data) {
+  var html = '';
+  for (var q = 0; q < data.length; q++) {
+    var quarter = data[q];
+    html += '<div class="missions-quarter">';
+    html += '<div class="missions-quarter-label">' + quarter.trimestre + '</div>';
+    for (var m = 0; m < quarter.missions.length; m++) {
+      var mission = quarter.missions[m];
+      var skills = (mission.competences || []).map(function(c) {
+        return '<span class="mission-skill">' + c + '</span>';
+      }).join('');
+      html += '<div class="mission-card">';
+      html += '<div class="mission-card-title">' + mission.titre + '</div>';
+      html += '<div class="mission-card-desc">'  + mission.description + '</div>';
+      if (skills) html += '<div class="mission-card-skills">' + skills + '</div>';
+      html += '</div>';
+    }
+    html += '</div>';
+  }
+  document.getElementById('missions-result-' + id).innerHTML = html;
+}
+
+async function generateMissions(id) {
+  var btn = document.getElementById('missions-btn-' + id);
+
+  // Depuis le cache
+  if (missionsCache[id]) {
+    renderMissionsResult(id, missionsCache[id]);
+    showMissionsState(id, 'result');
+    return;
+  }
+
+  // Trouver le sheet et les modules correspondants
+  var sheet = null;
+  for (var s = 0; s < SHEETS.length; s++) {
+    if (SHEETS[s].id === id) { sheet = SHEETS[s]; break; }
+  }
+  var panelEl = document.getElementById('panel-' + id);
+  var modulesData = panelEl ? panelEl.__modules : null;
+
+  if (!sheet) return;
+
+  btn.disabled = true;
+  btn.innerHTML = '<svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" style="animation:spin .7s linear infinite"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>Génération…';
+  showMissionsState(id, 'loading');
+
+  var modules = modulesData || [];
+  var prompt = buildMissionsPrompt(sheet, modules);
+
+  try {
+    var response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    var data = await response.json();
+    var text = '';
+    if (data.content) {
+      for (var c = 0; c < data.content.length; c++) {
+        if (data.content[c].type === 'text') { text = data.content[c].text; break; }
+      }
+    }
+    var clean   = text.replace(/```json|```/g, '').trim();
+    var parsed  = JSON.parse(clean);
+
+    missionsCache[id] = parsed;
+    renderMissionsResult(id, parsed);
+    showMissionsState(id, 'result');
+
+    btn.innerHTML = '<svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>Régénérer';
+
+  } catch (err) {
+    console.error('Erreur génération missions:', err);
+    showMissionsState(id, 'empty');
+    document.querySelector('#missions-empty-' + id + ' p').textContent = 'Une erreur s\'est produite. Vérifiez votre connexion et réessayez.';
+    btn.innerHTML = '↺ Réessayer';
+  }
+
+  btn.disabled = false;
+}
+
+// ── TOOLTIP ───────────────────────────────────────────────────────────────────
 // Tooltip
 var tooltip = document.getElementById('tl-tooltip');
 document.addEventListener('mousemove', function(e) {
